@@ -2,7 +2,6 @@
 #include <vector>
 #include <stdio.h>
 #include <algorithm>
-
 using namespace std;
 int N,index=0;
 bool judge(vector<int> &origin,vector<int> &v){
@@ -11,7 +10,6 @@ bool judge(vector<int> &origin,vector<int> &v){
 		i++;
 	}
 	index=i;	
-	
 	while(i<N){
 		if(v[i]!=origin[i])
 			return false;
@@ -46,21 +44,12 @@ int main(int argc, char const *argv[])
 	for (int i = 0; i <N; ++i)
 		scanf("%d",&v[i]);
 	if(judge(origin,v)){
-		printf("Insertion Sort\n");
-		
+		printf("Insertion Sort\n");		
 		sort(origin.begin(),origin.begin()+index+1);
-		// for (int i = 0; i < v.size(); ++i)
-		// {
-		// 	if(i==v.size()-1)
-		// 		printf("%d\n",v[i]);
-		// 	else
-		// 	printf("%d ",v[i]);
-		// }
 	}
 	else{
 		printf("Merge Sort\n");
-		Merge(v,origin);
-		
+		Merge(v,origin);	
 	}
 	for (int i = 0; i < origin.size(); ++i)
 		{
