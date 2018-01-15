@@ -44,7 +44,7 @@ int main(int argc, char const *argv[])
 		int root=v[0];
 		printf("Heap Sort\n");
 		while(k>=0&&v[k]>root)k--;
-		int index1=k;
+		int index1=k;//记录最后一个有序节点
 		swap(v[0],v[index1]);
 		int i=0;
 		while(2*i+1<index1){
