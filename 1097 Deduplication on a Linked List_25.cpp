@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include<algorithm>
 using namespace std;
-int start, N, addd, keyy, nextt, cur, pre_cur;
+int start, N, addd, keyy, nextt, cur;
 struct Node
 {
 	int add, key, next;
@@ -34,11 +34,9 @@ int main(int argc, char const *argv[])
 		cur = origin[cur].next;
 	}
 	
-	int res = start;
 	for (int i = 0; i+1<v.size(); ++i)
 	{
 			printf("%05d %d %05d\n", v[i].add, v[i].key, v[i+1].add);
-
 	}
 	if(v.size()>=1)
 	printf("%05d %d %d\n", v[v.size()-1].add, v[v.size()-1].key, -1);
