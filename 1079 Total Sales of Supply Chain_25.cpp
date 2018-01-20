@@ -36,14 +36,8 @@ int main(int argc, char const *argv[])
 			v[i].push_back(x);
 		}
 	}
-
-		dfs(v,0,P);
-		printf("%.1lf\n", sum);
-	
-
-
-
-
+	dfs(v,0,P);
+	printf("%.1lf\n", sum);
 	getchar();
 	system("pause");
 	return 0;
