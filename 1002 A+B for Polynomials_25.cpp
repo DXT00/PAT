@@ -1,8 +1,6 @@
 /*
 使用了map,当然也可以用vector只是时间会长点
-
 */
-
 #include <iostream>
 #include <algorithm>
 #include <stdio.h>
