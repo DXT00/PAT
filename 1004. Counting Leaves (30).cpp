@@ -1,3 +1,48 @@
+/*
+此题dfs、bfs都可以做，下面分别列出两种方法：
+*/
+/*方法一：dfs*/
+#include <iostream>
+#include <vector>
+#include <stdio.h>
+#include <algorithm>
+using namespace std;
+int N,M,ro,x,y;
+std::vector<int> v[105];
+int level[100];
+int MAX_level=-1;
+void dfs(int root,int le){
+	if(le>MAX_level)MAX_level=le;
+	if(v[root].size()==0){
+		level[le]++;
+		return;
+	}
+	for (int i = 0; i <v[root].size(); ++i)
+		dfs(v[root][i],le+1);
+	
+}
+int main(int argc, char const *argv[])
+{
+	scanf("%d%d",&N,&M);
+	for (int i = 0; i <M; ++i){
+		scanf("%d%d",&ro,&x);
+		for (int j = 0; j <x; ++j){
+			scanf("%d",&y);
+			v[ro].push_back(y);
+		}
+	}
+	dfs(1,0);
+	for (int i = 0; i <=MAX_level; ++i)
+	{
+		if(i!=0)printf(" ");
+		printf("%d",level[i]);
+	}
+	system("pause");
+	return 0;
+}
+
+/*
+方法二：bfs:
 #include <vector>
 #include <algorithm>
 #include <queue>
@@ -50,6 +95,7 @@ int main(int argc, char const *argv[])
 	return 0;
 }
 
+*/
 
 
 
