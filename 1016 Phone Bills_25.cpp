@@ -51,13 +51,13 @@ int main(int argc, char const *argv[])
 		scanf_s("%d", &Cost[i]);
 		day_Cost += Cost[i] * 60;
 	}
-	scanf_s("%d", &N);
+	scanf("%d", &N);
 	v.assign(N, Node());
 	for (int i = 0; i <N; ++i)
 	{
 		string online;
 		cin >> v[i].name;
-		scanf_s("%d:%d:%d:%d", &month, &v[i].day, &v[i].hour, &v[i].min);
+		scanf("%d:%d:%d:%d", &month, &v[i].day, &v[i].hour, &v[i].min);
 		cin >> online;
 
 		v[i].on = (online=="on-line") ? 1 : 0;
