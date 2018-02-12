@@ -7,12 +7,9 @@ using namespace std;
 int N, x, y;
 vector<int> cur;
 vector<vector<int> > v;
-
 set<int>longest,res;
 set<int>::iterator it;
 int MAXlevel = -1,first;
-
-
 std::vector<bool> visited;
 void dfs(int x,int level){
 	if(level>MAXlevel){
@@ -30,7 +27,6 @@ void dfs(int x,int level){
 			dfs(v[x][i],level+1);
 		}
 	}
-	
 }
 int liantong(){
 	int lian=0;
@@ -44,7 +40,6 @@ int liantong(){
 				first=*it;
 				for (; it!=longest.end();it++)
 					res.insert(*it);
-				
 			}
 		}
 	}
@@ -62,7 +57,6 @@ int main(int argc, char const *argv[])
 		v[y].push_back(x);
 	}
 	int reslian=liantong();
-	
 	if(reslian!=1)
 		printf("Error: %d components\n", reslian);
 	else{
@@ -76,7 +70,6 @@ int main(int argc, char const *argv[])
 		for (it = res.begin(); it != res.end(); it++)
 			printf("%d\n",*it );
 	}
- 
 	system("pause");
 	return 0;
 }
