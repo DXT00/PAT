@@ -1,4 +1,111 @@
 /*
+方法一：Dfs(剪枝就不会超时-->把路径长度len超过最小路径长度MIN的剪了！)
+*/
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <stdio.h>
+using namespace std;
+int Cmax,N,Sp,M,x,y,ti,minremain=99999999,minsend=999999999,MIN=99999999,remain,send;
+int bike[502];//minremain与minsend为res路径所对应的remain和send
+int timee[502][502];
+vector<int> res;
+vector<int> v[502];
+void dfs(int x,vector<bool> visited,int len,vector<int> path){
+	if(len>MIN)return;//剪枝了
+	if(x==Sp){
+			if(len<MIN){//时间最小的路径。则直接res=path,minremain=remain,minsend=send;
+				MIN=len;
+				res=path;
+				remain=0,send=0;
+				for (int i = 1; i <path.size(); ++i){  //计算remain,send
+					if(remain+bike[path[i]]>Cmax){
+						remain=remain+bike[path[i]]-Cmax;
+					}
+					else{
+						send+=(Cmax-(remain+bike[path[i]]));
+						remain=0;
+					}
+				}
+				minremain=remain;
+				minsend=send;
+			}
+			else if(len==MIN){//时间相同,比较remain和send
+				remain=0,send=0;
+				for (int i = 1; i <path.size(); ++i){  //计算remain,send
+					if(remain+bike[path[i]]>Cmax){
+						remain=remain+bike[path[i]]-Cmax;
+					}
+					else{
+						send+=(Cmax-(remain+bike[path[i]]));
+						remain=0;
+					}
+				}
+
+				if(send<minsend){
+					minsend=send;
+					minremain=remain;
+					res=path;
+				}
+				else if(send==minsend){
+					if(remain<minremain){
+						minremain=remain;
+						res=path;
+					}
+				}
+			}
+		return;
+	}
+	for (int i = 0; i <v[x].size(); ++i){
+		if(visited[v[x][i]]==false){
+			path.push_back(v[x][i]);
+			visited[v[x][i]]=true;
+			dfs(v[x][i],visited,len+timee[x][v[x][i]],path);
+			visited[v[x][i]]=false;
+			path.pop_back();
+		}	
+	}
+	
+}
+int main(int argc, char const *argv[])
+{
+	scanf("%d%d%d%d",&Cmax,&N,&Sp,&M);
+	Cmax/=2;
+	for (int i = 1; i <=N; ++i)
+		scanf("%d",&bike[i]);
+	for (int i = 0; i <M; ++i){
+		scanf("%d%d%d",&x,&y,&ti);
+		v[x].push_back(y);
+		v[y].push_back(x);
+		timee[x][y]=timee[y][x]=ti;
+	}
+	vector<bool> visited(N+1,false);
+	vector<int> path;
+	visited[0]=true;
+	path.push_back(0);
+	dfs(0,visited,0,path);
+	path.pop_back();
+	visited[0]=false;
+
+	cout<<minsend<<" ";
+	for (int j = 0; j <res.size() ; ++j){
+	 	if(j!=0)printf("->");
+	 	printf("%d",res[j]);
+	}
+	cout<<" "<<minremain<<endl;
+	
+	system("pause");
+	return 0;
+}
+
+/*
+想想啊：
+用djistra的话，路径要解析出来，麻烦！
+试一下dfs
+
+*/
+/*
+方法二：Dijastra与Dfs
 能够用数组的尽量用数组！！vector会超时！特别是vector<vector<int> >
 vector<vector<int> > a--->用vector<int> a[500]代替！
 用数组记得初始化！！(for)
