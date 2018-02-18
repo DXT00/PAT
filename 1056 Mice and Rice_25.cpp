@@ -2,92 +2,59 @@
 #include <vector>
 #include <stdio.h>
 #include <algorithm>
-#include <queue>
 #include <math.h>
+#include <queue>
 using namespace std;
-//-----------------------------
-//用队列
-// 可以分为group组
-// 每组选一个
-// 则剩下的老鼠排名=group+1
-//注意：不要漏了Np<Ng的情形！
-//------------------------------
-struct Node
-{
-	int weight;
-	int rank;
-	int th;//记录第几只老鼠
-	Node(){}
-};
-int Np, Ng;
-std::vector<Node> v;
-
+int Np,Ng;
+int MAX=-1,MAX_i;
+vector<int> weight,Rank;
+vector<int> order,v;
+queue<int> q;
+bool cmp(int a,int b){
+	return weight[a]>weight[b];
+}
 int main(int argc, char const *argv[])
 {
-	queue<Node> q;
-	scanf("%d%d", &Np, &Ng);
-	v.assign(Np, Node());
-	for (int i = 0; i < Np; ++i)
-	{
-		scanf("%d", &v[i].weight);
-		v[i].th = i;
-	}
-	//ranking
-	int group = ceil((double)Np / Ng);//ceil向上取整
-
-	int g_rank = group + 1;
-	int Max = -1, Max_i = -1;
-	int seq;
-	for (int i = 0; i < Np; ++i)
-	{
-		if (i != 0 && i%Ng == 0){
-			q.push(v[Max_i]);
-			Max = -1; Max_i = -1;
-		}
-		scanf("%d", &seq);
-		v[seq].rank = g_rank;
-
-		if (v[seq].weight>Max){
-			Max = v[seq].weight;
-			Max_i = seq;
-		}
-
-	}
-	q.push(v[Max_i]);
-	
-	int q_size = q.size();
-	group = ceil((double)group / Ng);
-	g_rank = group + 1;
-	Max = -1;
-	Max_i = -1;
-	int ii = 0;
-	while (!q.empty()){
-		Node w = q.front();
-		q.pop();
-		ii++;
-		if (q_size == 1){ v[w.th].rank = 1; break; }//只剩下一个时，rank=1
-		v[w.th].rank = g_rank;
-		if (w.weight>Max){ Max = w.weight; Max_i = w.th; }
-		if (ii%Ng == 0 && ii<q_size){ q.push(v[Max_i]); Max = -1; Max_i = -1; }
-		if (ii == q_size&&q_size != 1){
-			q.push(v[Max_i]);
-			Max = -1;
-			Max_i = -1;
-			q_size = q.size();
-			ii = 0;
-			group = ceil((double)group / Ng);
-			g_rank = group + 1;
-		}
-	}
+	scanf("%d%d",&Np,&Ng);
+	int N=Np;
+	weight.assign(N,0);
+	order.assign(N,0);
+	Rank.assign(N,0);
 	for (int i = 0; i <Np; ++i)
-	{
-		if(i!=Np-1)
-		cout << v[i].rank << " ";
-		else
-			cout << v[i].rank <<endl;
+		scanf("%d",&weight[i]);
+	for (int i = 0; i <Np; ++i){
+		scanf("%d",&order[i]);
+		q.push(order[i]);
 	}
-	getchar();
+	int currank=(Np%Ng==0)?(Np/Ng+1):(Np/Ng+2);
+	int cnt=0,MAX=-1,MAX_i;
+	while(!q.empty()){
+		int w=q.front();
+		Rank[w]=currank;
+		if(weight[w]>MAX){
+			MAX=weight[w];
+			MAX_i=w;
+		}
+		q.pop();
+		cnt++;
+		if(cnt%Ng==0||cnt==Np){
+			q.push(MAX_i);
+			MAX=-1;
+			if(cnt==Np){
+				Np=q.size();
+				if(Np==1){
+					Rank[q.front()]=1;
+					break;
+				}
+				currank=(Np%Ng==0)?(Np/Ng+1):(Np/Ng+2);
+				cnt=0;
+			}
+		}
+	}
+	for (int i = 0; i <Rank.size(); ++i){
+		if(i!=0)printf(" ");
+		printf("%d",Rank[i] );
+	}
 	system("pause");
 	return 0;
 }
-
