@@ -1,85 +1,66 @@
-#include <vector>
-#include <stdio.h>
-#include <algorithm>
 #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <stdio.h>
 #include <string>
-
 using namespace std;
-int N;
+int K;
 struct Node
 {
-  string xishu;
-  int zhishu;
-  Node() :xishu(""), zhishu(0){}
+	string s;
+	int p, cnt, ex;
+	string cof;
 };
-string A, B;
-Node change(string s){
-  Node res = Node();
-  int i = 0;
-  string point_before = "", point_after = "";
-  while (s[i] != '.'&&s[i] != '\0'){
-    point_before += s[i];
-    i++;
-  }
-  if (s[i] == '.'){
-    string ss = s.substr(i + 1);
-    point_after = ss;
-  }
-  if (stod(point_before)!=0){//如123.456
-    int i = 0;
-    while (point_before[i] == '0')i++;//除去多余的0-->会有坑：如：00123.456
-    point_before = point_before.substr(i);
-    res.xishu = "0." + point_before + point_after;
-    res.zhishu = point_before.size();
-  }
-  else{//小数的情况如：0.00145
-    int cnt_0 = 0;
-    int j = 0;
-    while (point_after[j] == '0'){
-      j++;
-      cnt_0++;//统计after中0的个数！
-    }
-    if (cnt_0 == point_after.size())//全为0的情况如：0.0000-->change-->0.0000*10^0
-      res.zhishu = 0;
-    else
-      res.zhishu = -cnt_0;//如0.0145-->0.145*10^-1
+string s1, s2;
+Node a = Node(), b = Node();
+void change(Node &a){
+	//找'.'的位置p！
+	a.p=a.s.size();//默认在最后
+	for (int i = 0; i <a.s.size(); ++i){
+		if(a.s[i]=='.'){
+			a.p=i;
+			break;
+		}
+	}
 
-    if (cnt_0 == point_after.size())//全为0的情况
-      res.xishu = s;
-    else
-      res.xishu = "0." + point_after.substr(j);
-  }
-  return res;
+	//找第一个非0数的位置cnt
+	int i=0;
+	while(a.s[i]=='0'||a.s[i]=='.')i++;
+	a.cnt=i;
+
+	//全0情况！
+	if(a.cnt==a.s.size()){//-->就是0的情况，如0.00 0.0000 
+		a.cof="0."+string(K,'0');//若K=2-->0.00*10^0
+		a.ex=0;
+		return;
+	}
+
+	//凑系数cof
+	string co;
+	int w = a.cnt;
+	i=0;
+	while(i<K){//K位有效数字
+		if(a.s[w]!='.'){
+			co+=(w<a.s.size())?a.s[w]:'0';
+			i++;	
+		}
+		w++;
+	}
+
+	a.cof = "0." + co;
+	a.ex =(a.cnt<a.p)? (a.p - a.cnt):(a.p - a.cnt+1);
 }
 int main(int argc, char const *argv[])
 {
-  cin >> N;
-  cin >> A >> B;
-  Node SA, SB;
-  SA = change(A);
-  SB = change(B);
-  int cnt = 0;
-
-  for (int i = 2; i <SA.xishu.size() && i<SB.xishu.size(); ++i)
-  {
-    if (SA.xishu[i] == SB.xishu[i]){
-      cnt++;
-    }
-    else
-      break;
-  }
-  if (cnt >= N&&SA.zhishu == SB.zhishu)
-    cout << "YES " << SA.xishu.substr(0, N + 2) << "*10^" << SA.zhishu << endl;
-    
-  else{
-    if (stod(SA.xishu) ==0&& stod(SB.xishu) == 0){//全为0的情况
-      string s0(N, '0');
-      cout << "YES 0." << s0 << "*10^0"<< endl;//指数必为0！ 如：0.0000-->change-->0.0000*10^0
-    }
-    else
-    cout << "NO " << SA.xishu << "*10^" << SA.zhishu << " " << SB.xishu << "*10^" << SB.zhishu << endl;
-    
-  }
-  system("pause");
-  return 0;
+	scanf("%d", &K);
+	cin >> a.s >> b.s;
+	change(a);
+	change(b);
+	if (a.ex == b.ex&&a.cof == b.cof)
+		printf("YES %s*10^%d\n", a.cof.c_str(), a.ex);
+	else
+		printf("NO %s*10^%d %s*10^%d",a.cof.c_str(), a.ex,b.cof.c_str(), b.ex);
+		
+	system("pause");
+	return 0;
 }
