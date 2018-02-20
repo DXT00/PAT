@@ -55,3 +55,54 @@ int main(int argc, char const *argv[])
 	system("pause");
 	return 0;
 }
+/*dfs--->超时！*/
+// #include <iostream>
+// #include <vector>
+// #include <stdio.h>
+// #include <algorithm>
+// #include <set>
+// using namespace std;
+// int N, L, k, x, Q, num;
+// vector<int> v[1005];
+// bool visited[1005];
+// set<int> s;
+// void dfs(int x, int level){
+// 	if (level >= L)return;
+// 	for (int i = 0; i <v[x].size(); ++i)
+// 	{
+// 		int j = v[x][i];
+// 		if (visited[j] == false){
+// 			visited[j] = true;
+// 			s.insert(j);
+// 			dfs(j, level + 1);
+// 			visited[j] = false;
+// 		}
+// 	}
+// }
+// int main(int argc, char const *argv[])
+// {
+// 	scanf("%d%d", &N, &L);
+
+// 	for (int i = 1; i <= N; ++i){
+// 		scanf("%d", &k);
+// 		for (int j = 0; j <k; ++j){
+// 			scanf("%d", &x);
+// 			v[x].push_back(i);
+// 		}
+// 	}
+// 	scanf("%d", &Q);
+
+// 	for (int i = 0; i <Q; ++i){
+// 		num = 0;
+// 		fill(visited,visited+N+1,false);
+// 		s.clear();
+// 		scanf("%d", &x);
+// 		visited[x] = true;
+// 		dfs(x, 0);
+// 		visited[x] = true;
+
+// 		cout << s.size() << endl;
+// 	}
+// 	system("pause");
+// 	return 0;
+// }
