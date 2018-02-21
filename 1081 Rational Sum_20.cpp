@@ -2,60 +2,50 @@
 求最大公约数的方法：（辗转相除法）
 long long gcd(long long a, long long b) {return b == 0 ? abs(a) : gcd(b, a % b);}
 */
-
 #include <vector>
-#include <stdio.h>
-#include <iostream>
 #include <algorithm>
+#include <iostream>
+#include <stdio.h>
 #include <math.h>
 using namespace std;
 long long N;
-void process(long long &up, long long &down){//约分
-	for (long long i = 2; i <= min(abs(up), abs(down));){
-		if (up%i == 0 && down%i == 0){
-			up = up / i;
-			down = down / i;
-		}
-		else
-			i++;
-	}
+struct Node
+{
+	long long up, down;
+};
+
+std::vector<Node> v;
+long long gcd(long long a, long long b){
+	return (b == 0) ? a : gcd(b, a%b);
 }
 int main(int argc, char const *argv[])
 {
-	long long mul = 1;//总分母
-	cin >> N;
-	long long up,down;
-	string s;
-	long long sum_up = 0;//总分子
-	for (long long i = 0; i <N; ++i)
+	scanf("%lld", &N);
+	v.assign(N, Node());
+	for (long long i = 0; i <N; ++i){
+		scanf("%lld/%lld", &v[i].up, &v[i].down);
+	}
+	long long res_up = v[0].up, res_down = v[0].down;
+	for (long long i = 1; i <N; ++i)
 	{
-		scanf("%lld/%lld", &up, &down);//注意此方法！
-		
-		if (i == 0){
-			mul = down;
-			sum_up = up;
-		}
-		else{		
-			sum_up = sum_up*down + up*mul;
-			mul *= down;
-		}	
-		process(sum_up, mul);//要一边加一边约分，否则sum_up会超出long long 范围！！-->浮点错误！（溢出）	
+		res_up = res_up*v[i].down + v[i].up*res_down;
+		res_down = res_down*v[i].down;
+		long long w = (abs(res_up)>abs(res_down)) ? gcd(abs(res_up), abs(res_down)) : gcd(abs(res_down), abs(res_up));
+		res_up /= w;
+		res_down /= w;
 	}
-
-	long long integer = sum_up / mul;
-	long long res_up = sum_up%mul;
-	long long res_down = mul;
-
-	if (integer != 0 && res_up != 0)
-		cout << integer << " " << res_up << "/" << res_down << endl;
-	else if (integer == 0 && res_up != 0){
-		cout << res_up << "/" << res_down << endl;
+	long long cof = res_up / res_down;
+	if (cof != 0){
+		printf("%lld", cof);
+		if (res_up%res_down != 0)
+			printf(" %lld/%lld\n", abs(res_up%res_down), res_down);
 	}
-	else if (integer != 0 && res_up == 0)
-		cout << integer << endl;
-	else
-		cout << 0 << endl;
-
+	else{
+		if (res_up%res_down != 0)
+			printf("%lld/%lld\n", res_up%res_down, res_down);
+		else
+			printf("0\n");
+	}
 	system("pause");
 	return 0;
 }
