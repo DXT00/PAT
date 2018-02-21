@@ -12,8 +12,7 @@ int main(int argc, char const *argv[])
 	string str;
 	int MINlen = 100000;
 	std::vector<string> s;
-	for (int i = 0; i <N; ++i)
-	{
+	for (int i = 0; i <N; ++i){
 		getline(cin, str);
 		reverse(str.begin(), str.end());
 		s.push_back(str);
@@ -23,10 +22,8 @@ int main(int argc, char const *argv[])
 	}
 	string res="";
 	bool flag=false;
-	for (int i = 0; i <MINlen; ++i)
-	{
-		for (int j = 1; j <N; ++j)
-		{
+	for (int i = 0; i <MINlen; ++i){
+		for (int j = 1; j <N; ++j){
 			if (s[j][i] != s[0][i]){
 				flag=true;
 				break;
