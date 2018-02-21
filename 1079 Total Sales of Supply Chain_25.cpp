@@ -1,44 +1,36 @@
-#include <iostream>
-#include <stdio.h>
 #include <vector>
+#include <iostream>
 #include <algorithm>
+#include <stdio.h>
 using namespace std;
 int N,k,x;
 double P,r,sum=0;
-std::vector<int> cur;
-std::vector<vector<int> > v;
-void dfs(vector<vector<int> > &v,int root,double curP){
-	if(v[root][0]==0){
-		sum+=v[root][1]*curP;
+std::vector<int> v[100005];
+std::vector<int> weight(100005);
+void dfs(int x,double price){
+	if(v[x].size()==0){//customers
+		sum+=price*weight[x];
 		return;
 	}
-	else{
-		for (int i = 0; i <v[root].size(); ++i)
-		{
-			dfs(v,v[root][i],curP*(1+r*0.01));
-		}
+	for (int i = 0; i <v[x].size(); ++i){
+		dfs(v[x][i],(1+r*0.01)*price);
 	}
 }
 int main(int argc, char const *argv[])
 {
-	scanf("%d%lf%lf",&N,&P,&r);	
-	v.assign(N,cur);
-	for (int i = 0; i <N; ++i)
-	{
+	scanf("%d%lf%lf",&N,&P,&r);
+	for (int i = 0; i <N; ++i){
 		scanf("%d",&k);
 		if(k==0){
-			v[i].push_back(0);
-			k=1;
+			scanf("%d",&weight[i]);
 		}
-		for (int j = 0; j <k; ++j)
-		{
+		for (int j = 0; j <k; ++j){
 			scanf("%d",&x);
 			v[i].push_back(x);
 		}
 	}
-	dfs(v,0,P);
-	printf("%.1lf\n", sum);
-	getchar();
+	dfs(0,P);
+	printf("%.1lf\n",sum);
 	system("pause");
 	return 0;
 }
