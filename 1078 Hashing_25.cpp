@@ -42,7 +42,6 @@ int main(int argc, char const *argv[])
 {
 	scanf("%d%d",&M,&N);
 	TSize=find_prime(M);
-	//cout<<TSize<<endl;
 	v.assign(TSize,-1);
 	for (int i = 0; i <N; ++i)
 	{
