@@ -1,40 +1,33 @@
-#include <iostream>
 #include <vector>
-#include <iostream>
 #include <algorithm>
+#include <stdio.h>
+#include <iostream>
 #include <string>
 #include <map>
 using namespace std;
-
-string s1,s2;
-string res;
+string origin,s;
+std::vector<char> v;
+std::map<char, bool> m;
 int main(int argc, char const *argv[])
 {
-	cin>>s1>>s2;
-	for (int i = 0; i <s2.size(); )
-	{
-		for (int j = 0; j <s1.size(); ++j)
-		{
-			if(s1[j]!=s2[i])
-				res+=s1[j];
-			else if(s1[j]==s2[i]){
-				i++;
-			}
+	cin>>origin>>s;
+	int i=0,j=0;
+	while(i<origin.size()){
+		if(origin[i]!=s[j]){
+			char cur=isalpha(origin[i])?toupper(origin[i]):origin[i];
+			if(m[cur]==false){
+				v.push_back(cur);
+				m[cur]=true;
+			}	
 		}
-	}
-	std::map<char, bool> m;
-	string result;
-	for (int i = 0; i <res.size(); ++i)
-	{
-		if(res[i]>='a'&&res[i]<='z')
-			res[i]=res[i]-32;
-
-		if(m[res[i]]==false){
-			m[res[i]]=true;
-			result+=res[i];
+		else{
+			j++;
 		}
+		i++;
 	}
-	cout<<result<<endl;
+	for (int i = 0; i <v.size(); ++i)
+		cout<<v[i];
+	
 	system("pause");
 	return 0;
 }
