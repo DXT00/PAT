@@ -1,73 +1,79 @@
-#include <iostream>
 #include <vector>
-#include <stdio.h>
 #include <algorithm>
+#include <stdio.h>
+#include <iostream>
 #include <queue>
 using namespace std;
-int M, N, L, T;
-struct Node
-{
-	int x, y, z;
-	Node(int x, int y, int z) :x(x), y(y), z(z){}
+int M,N,L,T,x,res=0;//M=1286x ,N=128y,L=60z
+struct Node{
+    int x,y,z,data;
 };
-int v[80][1300][130];
-bool visited[80][1300][130];
-int X[6] = { 1, -1, 0, 0, 0, 0 };
-int Y[6] = { 0, 0, 1, -1, 0, 0 };
-int Z[6] = { 0, 0, 0, 0, 1, -1 };
-bool judge(int x, int y, int z){
-	if (x<0 || x >= M || y<0 || y >= N || z<0 || z >= L)return false;
-	if (v[z][x][y] == 0 || visited[z][x][y] == true) return false;
-
-	return true;
-}
-int bfs(int x, int y, int z){
-	int cnt = 0;
-	queue<Node> q;
-	Node tmp = Node(x, y, z);
-	q.push(tmp);
-	while (!q.empty()){
-		Node w = q.front();
-		q.pop();
-		cnt++;
-		for (int i = 0; i <6; ++i)
-		{
-			int tx = w.x + X[i];
-			int ty = w.y + Y[i];
-			int tz = w.z + Z[i];
-
-			if (judge(tx, ty, tz)){
-				visited[tz][tx][ty] = true;
-				q.push(Node(tx, ty, tz));
-				//cout << tx << " " << ty << " " << tz << endl;
+Node v[65][1300][130];
+int visited[65][1300][130];
+queue<Node>q;
+int main(int argc, char const *argv[])
+{
+	scanf("%d%d%d%d",&M,&N,&L,&T);
+	for (int k = 0; k <L ; ++k){
+		for (int i = 0; i <M; ++i){
+			for (int j = 0; j < N; ++j){
+					scanf("%d",&x);
+					v[k][i][j].z=k;
+					v[k][i][j].x=i;
+					v[k][i][j].y=j;
+					v[k][i][j].data=x;
 			}
 		}
 	}
-	if (cnt >= T)
-		return cnt;
-	else
-		return 0;
-}
-int main(int argc, char const *argv[])
-{
-	int res = 0;
-	scanf("%d%d%d%d", &M, &N, &L, &T);
-	for (int i = 0; i <L; ++i)
-		for (int j = 0; j <M; ++j)
-			for (int k = 0; k < N; ++k)
-				scanf("%d", &v[i][j][k]);
+	for (int k = 0; k <L ; ++k){
+		for (int i = 0; i <M; ++i){
+			for (int j = 0; j < N; ++j){
+					if(visited[k][i][j]==0&&v[k][i][j].data==1){
+						visited[k][i][j]=1;
+						q.push(v[k][i][j]);
+						int cur=0;
+						while(!q.empty()){
+							Node w=q.front();
+							q.pop();
+							cur++;
+							int x=w.x,y=w.y,z=w.z;
+							if(z+1<L&&v[z+1][x][y].data==1&&visited[z+1][x][y]==0){
+								q.push(v[z+1][x][y]);
+								visited[z+1][x][y]=1;
+							}
 
-	for (int i = 0; i <L; ++i)
-		for (int j = 0; j <M; ++j)
-			for (int k = 0; k < N; ++k){
-				if (v[i][j][k] == 1 && visited[i][j][k] == false){
-					visited[i][j][k] = true;
-					res += bfs(j, k, i);
-				}
+							if(z-1>=0&&v[z-1][x][y].data==1&&visited[z-1][x][y]==0){
+								q.push(v[z-1][x][y]);
+								visited[z-1][x][y]=1;
+							}
+
+							if(x+1<M&&v[z][x+1][y].data==1&&visited[z][x+1][y]==0){
+								q.push(v[z][x+1][y]);
+								visited[z][x+1][y]=1;
+							}
+
+							if(x-1>=0&&v[z][x-1][y].data==1&&visited[z][x-1][y]==0){
+								q.push(v[z][x-1][y]);
+								visited[z][x-1][y]=1;
+							}
+
+							if(y+1<N&&v[z][x][y+1].data==1&&visited[z][x][y+1]==0){
+								q.push(v[z][x][y+1]);
+								visited[z][x][y+1]=1;
+							}
+
+							if(y-1>=0&&v[z][x][y-1].data==1&&visited[z][x][y-1]==0){
+								q.push(v[z][x][y-1]);
+								visited[z][x][y-1]=1;
+							}
+							
+						}
+						if(cur>=T)res+=cur;
+					}
 			}
-	cout << res << endl;
-	getchar();
+		}
+	}
+	cout<<res<<endl;
 	system("pause");
 	return 0;
 }
-
