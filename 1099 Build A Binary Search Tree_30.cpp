@@ -1,51 +1,49 @@
 #include <iostream>
 #include <vector>
-#include <stdio.h>
 #include <algorithm>
+#include <stdio.h>
 #include <queue>
 using namespace std;
-int N;
-struct Node
-{
-	int left,right;
-	int data;
+int N,x,y,k=0;
+struct Node{
+	int left,right,data;	
 };
-std::vector<int> in_order;
-
-void in_or(vector<Node> &v,int root){
+std::vector<Node> v;
+std::vector<int> order;
+void dfs(int root){
 	if(root==-1)return;
-
-	in_or(v,v[root].left);
-	in_order.push_back(root);
-	in_or(v,v[root].right);
+	dfs(v[root].left);
+	v[root].data=order[k++];
+	dfs(v[root].right);
 }
-int main(int argc, char const *argv[])
-{
-	scanf("%d",&N);
-	std::vector<Node> v(N);
-	std::vector<int> num(N);	
+void bfs(){
 	queue<int> q;
-	for (int i = 0; i <N; ++i)
-		scanf("%d%d",&v[i].left,&v[i].right);
-	for (int i = 0; i <N; ++i)
-		scanf("%d",&num[i]);
-	in_or(v,0);
-	sort(num.begin(), num.end());
-	for (int i = 0; i <N; ++i)
-	{
-		v[in_order[i]].data=num[i];
-	}
+	int c=0;
 	q.push(0);
 	while(!q.empty()){
 		int w=q.front();
 		q.pop();
-		if(w!=0)printf(" ");
+		if(c!=0)
+			printf(" ");
 		printf("%d",v[w].data);
+		c++;
 		if(v[w].left!=-1)q.push(v[w].left);
 		if(v[w].right!=-1)q.push(v[w].right);
 	}
-	printf("\n");
-	getchar();
+}
+int main(int argc, char const *argv[])
+{
+	scanf("%d",&N);
+	v.assign(N,Node());
+	order.assign(N,0);
+	for (int i = 0; i <N; ++i){
+		scanf("%d%d",&v[i].left,&v[i].right);
+	}
+	for (int i = 0; i <N; ++i)
+		scanf("%d",&order[i]);
+	sort(order.begin(), order.end());
+	dfs(0);
+	bfs();
 	system("pause");
 	return 0;
 }
