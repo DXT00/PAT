@@ -13,18 +13,14 @@ int main(int argc, char const *argv[])
 	for (int i = 0; i <N; ++i)
 		scanf("%d", &v[i]);
 	sort(v.begin(), v.end(), cmp);
-	for (int i = sqrt(N); i >= 1; i--)
+	for (int i = 1; i <=N; ++i)
 	{
-		if (N%i == 0){
-			if (N / i - i<MIN){
-				MIN = N / i - i;
-				n = i;
-				m = N / n;
-			}
-			else
-				break;
+		if(N%i==0){
+			m=i;
+			n=N/i;
+			if(m>=n)break;
 		}
-	}	
+	}//m行n列
 	std::vector<int> cur(n, 0);
 	std::vector<vector<int> > res(m, cur);
 	int k = 1, j = 0;
@@ -69,10 +65,8 @@ int main(int argc, char const *argv[])
 		k++;
 		
 	}
-	for (int i = 0; i <m; ++i)
-	{
-		for (int j = 0; j < n; ++j)
-		{
+	for (int i = 0; i <m; ++i){
+		for (int j = 0; j < n; ++j){
 			if(j!=0)printf(" ");
 			printf("%d", res[i][j]);
 		}
