@@ -1,63 +1,61 @@
-#include <iostream>
-#include <stdio.h>
 #include <vector>
 #include <algorithm>
+#include <stdio.h>
+#include <iostream>
 using namespace std;
-int N, x, hobit;
-vector<int> hobits[1002];
-vector<int> v;
+int N, k, x;
+std::vector<int> hobby[1002];
+std::vector<int> v;
 int findRoot(int x){
-	while (v[x]>0){
-		x = v[x];
-	}
-	return x;
+	int cur = x;
+	while (v[cur] >=0)
+		cur = v[cur];
+	return cur;
 }
 void Union(int a, int b){
 	int roota = findRoot(a);
 	int rootb = findRoot(b);
-	if (roota != rootb){
-		v[roota] += v[rootb];//统计人数用负数如：-3  表示这组有3人！
+	if(roota!=rootb){
+		v[roota] = v[roota] + v[rootb];////统计人数用负数如：-3  表示这组有3人！
 		v[rootb] = roota;
 	}
+	
 }
-bool cmp(int a, int b){ return a>b; }
 int main(int argc, char const *argv[])
 {
 	scanf("%d", &N);
-	v.assign(N+1, -1);
-	for (int i = 1; i <= N; ++i)
-	{
-		scanf("%d:", &x);
-		for (int j = 0; j <x; ++j)
-		{
-			scanf("%d", &hobit);
-			hobits[hobit].push_back(i);
+	v.assign(N + 1, -1);
+	for (int i = 1; i <= N; ++i){
+		scanf("%d:", &k);
+		for (int j = 0; j <k; ++j){
+			scanf("%d", &x);
+			hobby[x].push_back(i);
 		}
 	}
-	for (int i = 1; i <1002; ++i)
+	int root, w;
+	for (int i = 1; i < 1002; ++i)
 	{
-		if (hobits[i].size()>0){
-			vector<int> temp = hobits[i];
-			int root = findRoot(temp[0]);
-			for (int j = 1; j <temp.size(); ++j)
-				Union(root, temp[j]);
+		if (hobby[i].size() != 0){
+			vector<int> cur = hobby[i];
+			for (int j = 1; j <cur.size(); ++j)
+				Union(cur[0], cur[j]);		
 		}
 	}
-	int group = 0;
+	int cnt = 0;
 	std::vector<int> res;
 	for (int i = 1; i <= N; ++i)
 	{
 		if (v[i]<0){
-			group++;
-			res.push_back(-v[i]);
+			cnt++;
+			res.push_back(v[i]);
 		}
 	}
-	sort(res.begin(), res.end(), cmp);
-	cout << group << endl;
-	for (int i = 0; i <res.size(); ++i)
+	sort(res.begin(),res.end());
+	printf("%d\n", cnt);
+	for (int i=0;i<res.size();i++)
 	{
-		if (i != 0)printf(" ");
-		printf("%d", res[i]);
+		if (i!=0)printf(" ");
+		printf("%d", -res[i]);
 	}
 	system("pause");
 	return 0;
