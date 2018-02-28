@@ -83,7 +83,6 @@ int main(int argc, char const *argv[])
         }
 
     }
-    
     sort(res.begin(), res.end(), cmp);
 
     for (int i = 0; i < K; ++i)
