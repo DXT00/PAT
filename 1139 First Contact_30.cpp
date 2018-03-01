@@ -18,6 +18,7 @@ bool cmp(Node a, Node b){
   if (a.C != b.C)return a.C<b.C;
   else return a.D<b.D;
 }
+
 void find(int x, int y){
   int cnt = 0;
   std::vector<Node> res;
