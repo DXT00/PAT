@@ -45,7 +45,6 @@ int main(int argc, char const *argv[])
 	}
 	//满了-->出队
 	while(index<=K){
-
 		int MIN=inf,MIN_i;
 		for (int i = 1; i <=N; ++i)
 		{
