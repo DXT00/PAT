@@ -14,7 +14,6 @@ ZOE1=((Z-A)*26^2+(O-A)*26^1+(E-A)*26^0)*10+1
 先把char[]映射成整数！
 
 */
-
 #include <iostream>
 #include <vector>
 #include <stdio.h>
