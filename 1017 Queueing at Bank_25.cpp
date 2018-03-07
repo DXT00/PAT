@@ -69,13 +69,6 @@ int main(int argc, char const *argv[])
 
 
 
-
-
-
-
-
-
-
 // #include <vector>
 // #include <iostream>
 // #include <algorithm>
