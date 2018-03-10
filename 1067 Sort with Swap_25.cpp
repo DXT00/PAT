@@ -1,57 +1,98 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
 #include <stdio.h>
-#include <set>
+#include <vector>
+#include <iostream>
+#include <string>
 using namespace std;
-int N, done = 0;
-std::vector<int> v;
-std::vector<int> pos;
-set<int>s;//用set存储那些位置不对的数
-set<int>::iterator it;
 
+int N, origin, x, already = 0, cnt = 0, c = 0;
+std::vector<int> pos, v;
 int main(int argc, char const *argv[])
 {
-	scanf_s("%d", &N);
+	scanf("%d", &N);
 	v.assign(N, 0);
 	pos.assign(N, 0);
 	for (int i = 0; i <N; ++i)
 	{
-		scanf_s("%d", &v[i]);
-		if (i!=0&&v[i] == i)done++;
-		else{
-			if (i!=0)
-			s.insert(i);
-		}
-		pos[v[i]] = i;
+		scanf("%d", &x);
+		pos[x] = i;
+		if (x == i)already++;
 	}
-	int cnt = 0, w;
-	while (true){
-
+	while (already<N){
 		if (pos[0] != 0){
-			set<int>::iterator its;
-			its = s.find(pos[0]);
-			s.erase(its);
-
 			swap(pos[0], pos[pos[0]]);
-
-			done++;
 			cnt++;
+			already++;
 		}
 		else{
-			if (s.size() == 0)break;
-			it = s.begin();
-			swap(pos[0], pos[*it]);
-			cnt++;
+			if (already == N - 1)break;		
 
+			while (pos[c] == c)c++;
+			swap(pos[0], pos[c]);
+			cnt++;
+		
 
 		}
-
 	}
 	cout << cnt << endl;
 	system("pause");
 	return 0;
 }
+
+// #include <iostream>
+// #include <vector>
+// #include <algorithm>
+// #include <stdio.h>
+// #include <set>
+// using namespace std;
+// int N, done = 0;
+// std::vector<int> v;
+// std::vector<int> pos;
+// set<int>s;//用set存储那些位置不对的数
+// set<int>::iterator it;
+
+// int main(int argc, char const *argv[])
+// {
+// 	scanf_s("%d", &N);
+// 	v.assign(N, 0);
+// 	pos.assign(N, 0);
+// 	for (int i = 0; i <N; ++i)
+// 	{
+// 		scanf_s("%d", &v[i]);
+// 		if (i!=0&&v[i] == i)done++;
+// 		else{
+// 			if (i!=0)
+// 			s.insert(i);
+// 		}
+// 		pos[v[i]] = i;
+// 	}
+// 	int cnt = 0, w;
+// 	while (true){
+
+// 		if (pos[0] != 0){
+// 			set<int>::iterator its;
+// 			its = s.find(pos[0]);
+// 			s.erase(its);
+
+// 			swap(pos[0], pos[pos[0]]);
+
+// 			done++;
+// 			cnt++;
+// 		}
+// 		else{
+// 			if (s.size() == 0)break;
+// 			it = s.begin();
+// 			swap(pos[0], pos[*it]);
+// 			cnt++;
+
+
+// 		}
+
+// 	}
+// 	cout << cnt << endl;
+// 	system("pause");
+// 	return 0;
+// }
 
 // #include <iostream>
 // #include <vector>
